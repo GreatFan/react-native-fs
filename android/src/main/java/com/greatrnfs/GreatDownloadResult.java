@@ -1,6 +1,6 @@
-package com.rnfs;
+package com.greatrnfs;
 
-public class DownloadResult {
+public class GreatDownloadResult {
   public int statusCode;
   public long bytesWritten;
   public Exception exception;

@@ -1,5 +1,4 @@
-
-package com.rnfs;
+package com.greatrnfs;
 
 import java.io.FileOutputStream;
 import java.io.BufferedInputStream;
@@ -16,14 +15,14 @@ import android.os.AsyncTask;
 
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 
-public class Downloader extends AsyncTask<DownloadParams, long[], DownloadResult> {
-  private DownloadParams mParam;
+public class GreatDownloader extends AsyncTask<GreatDownloadParams, long[], GreatDownloadResult> {
+  private GreatDownloadParams mParam;
   private AtomicBoolean mAbort = new AtomicBoolean(false);
-  DownloadResult res;
+  GreatDownloadResult res;
 
-  protected DownloadResult doInBackground(DownloadParams... params) {
+  protected GreatDownloadResult doInBackground(GreatDownloadParams... params) {
     mParam = params[0];
-    res = new DownloadResult();
+    res = new GreatDownloadResult();
 
     new Thread(new Runnable() {
       public void run() {
@@ -40,7 +39,7 @@ public class Downloader extends AsyncTask<DownloadParams, long[], DownloadResult
     return res;
   }
 
-  private void download(DownloadParams param, DownloadResult res) throws Exception {
+  private void download(GreatDownloadParams param, GreatDownloadResult res) throws Exception {
     InputStream input = null;
     OutputStream output = null;
     HttpURLConnection connection = null;
@@ -130,7 +129,7 @@ public class Downloader extends AsyncTask<DownloadParams, long[], DownloadResult
               double progress = Math.round(((double) total * 100) / lengthOfFile);
               if (progress % param.progressDivider == 0) {
                 if ((progress != lastProgressValue) || (total == lengthOfFile)) {
-                  Log.d("Downloader", "EMIT: " + String.valueOf(progress) + ", TOTAL:" + String.valueOf(total));
+                  Log.d("GreatDownloader", "EMIT: " + String.valueOf(progress) + ", TOTAL:" + String.valueOf(total));
                   lastProgressValue = progress;
                   publishProgress(new long[]{lengthOfFile, total});
                 }

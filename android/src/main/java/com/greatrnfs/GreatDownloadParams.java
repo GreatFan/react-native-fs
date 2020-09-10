@@ -1,4 +1,4 @@
-package com.rnfs;
+package com.greatrnfs;
 
 import java.io.File;
 import java.net.URL;
@@ -6,9 +6,9 @@ import java.util.*;
 
 import com.facebook.react.bridge.ReadableMap;
 
-public class DownloadParams {
+public class GreatDownloadParams {
   public interface OnTaskCompleted {
-    void onTaskCompleted(DownloadResult res);
+    void onTaskCompleted(GreatDownloadResult res);
   }
 
   public interface OnDownloadBegin {

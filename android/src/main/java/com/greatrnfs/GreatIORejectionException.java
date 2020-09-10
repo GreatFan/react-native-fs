@@ -1,9 +1,9 @@
-package com.rnfs;
+package com.greatrnfs;
 
-class IORejectionException extends Exception {
+class GreatIORejectionException extends Exception {
     private String code;
 
-    public IORejectionException(String code, String message) {
+    public GreatIORejectionException(String code, String message) {
         super(message);
         this.code = code;
     }

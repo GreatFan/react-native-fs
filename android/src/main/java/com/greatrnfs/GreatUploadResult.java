@@ -1,8 +1,8 @@
-package com.rnfs;
+package com.greatrnfs;
 
 import com.facebook.react.bridge.WritableMap;
 
-public class UploadResult {
+public class GreatUploadResult {
     public int statusCode;
     public WritableMap headers;
     public Exception exception;

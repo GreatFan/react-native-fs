@@ -1,4 +1,4 @@
-package com.rnfs;
+package com.greatrnfs;
 
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
@@ -39,8 +39,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-@ReactModule(name = RNFSManager.MODULE_NAME)
-public class RNFSManager extends ReactContextBaseJavaModule {
+@ReactModule(name = GreatRNFSManager.MODULE_NAME)
+public class GreatRNFSManager extends ReactContextBaseJavaModule {
 
   static final String MODULE_NAME = "RNFSManager";
 
@@ -57,12 +57,12 @@ public class RNFSManager extends ReactContextBaseJavaModule {
   private static final String RNFSFileTypeRegular = "RNFSFileTypeRegular";
   private static final String RNFSFileTypeDirectory = "RNFSFileTypeDirectory";
 
-  private SparseArray<Downloader> downloaders = new SparseArray<>();
-  private SparseArray<Uploader> uploaders = new SparseArray<>();
+  private SparseArray<GreatDownloader> downloaders = new SparseArray<>();
+  private SparseArray<GreatUploader> uploaders = new SparseArray<>();
 
   private ReactApplicationContext reactContext;
 
-  public RNFSManager(ReactApplicationContext reactContext) {
+  public GreatRNFSManager(ReactApplicationContext reactContext) {
     super(reactContext);
     this.reactContext = reactContext;
   }
@@ -72,20 +72,20 @@ public class RNFSManager extends ReactContextBaseJavaModule {
     return MODULE_NAME;
   }
 
-  private Uri getFileUri(String filepath, boolean isDirectoryAllowed) throws IORejectionException {
+  private Uri getFileUri(String filepath, boolean isDirectoryAllowed) throws GreatIORejectionException {
     Uri uri = Uri.parse(filepath);
     if (uri.getScheme() == null) {
       // No prefix, assuming that provided path is absolute path to file
       File file = new File(filepath);
       if (!isDirectoryAllowed && file.isDirectory()) {
-        throw new IORejectionException("EISDIR", "EISDIR: illegal operation on a directory, read '" + filepath + "'");
+        throw new GreatIORejectionException("EISDIR", "EISDIR: illegal operation on a directory, read '" + filepath + "'");
       }
       uri = Uri.parse("file://" + filepath);
     }
     return uri;
   }
 
-  private String getOriginalFilepath(String filepath, boolean isDirectoryAllowed) throws IORejectionException {
+  private String getOriginalFilepath(String filepath, boolean isDirectoryAllowed) throws GreatIORejectionException {
     Uri uri = getFileUri(filepath, isDirectoryAllowed);
     String originalFilepath = filepath;
     if (uri.getScheme().equals("content")) {
@@ -101,30 +101,30 @@ public class RNFSManager extends ReactContextBaseJavaModule {
     return originalFilepath;
   }
 
-  private InputStream getInputStream(String filepath) throws IORejectionException {
+  private InputStream getInputStream(String filepath) throws GreatIORejectionException {
     Uri uri = getFileUri(filepath, false);
     InputStream stream;
     try {
       stream = reactContext.getContentResolver().openInputStream(uri);
     } catch (FileNotFoundException ex) {
-      throw new IORejectionException("ENOENT", "ENOENT: " + ex.getMessage() + ", open '" + filepath + "'");
+      throw new GreatIORejectionException("ENOENT", "ENOENT: " + ex.getMessage() + ", open '" + filepath + "'");
     }
     if (stream == null) {
-      throw new IORejectionException("ENOENT", "ENOENT: could not open an input stream for '" + filepath + "'");
+      throw new GreatIORejectionException("ENOENT", "ENOENT: could not open an input stream for '" + filepath + "'");
     }
     return stream;
   }
 
-  private OutputStream getOutputStream(String filepath, boolean append) throws IORejectionException {
+  private OutputStream getOutputStream(String filepath, boolean append) throws GreatIORejectionException {
     Uri uri = getFileUri(filepath, false);
     OutputStream stream;
     try {
       stream = reactContext.getContentResolver().openOutputStream(uri, append ? "wa" : "w");
     } catch (FileNotFoundException ex) {
-      throw new IORejectionException("ENOENT", "ENOENT: " + ex.getMessage() + ", open '" + filepath + "'");
+      throw new GreatIORejectionException("ENOENT", "ENOENT: " + ex.getMessage() + ", open '" + filepath + "'");
     }
     if (stream == null) {
-      throw new IORejectionException("ENOENT", "ENOENT: could not open an output stream for '" + filepath + "'");
+      throw new GreatIORejectionException("ENOENT", "ENOENT: could not open an output stream for '" + filepath + "'");
     }
     return stream;
   }
@@ -706,7 +706,7 @@ public class RNFSManager extends ReactContextBaseJavaModule {
       boolean hasBeginCallback = options.getBoolean("hasBeginCallback");
       boolean hasProgressCallback = options.getBoolean("hasProgressCallback");
 
-      DownloadParams params = new DownloadParams();
+      GreatDownloadParams params = new GreatDownloadParams();
 
       params.src = url;
       params.dest = file;
@@ -716,8 +716,8 @@ public class RNFSManager extends ReactContextBaseJavaModule {
       params.readTimeout = readTimeout;
       params.connectionTimeout = connectionTimeout;
 
-      params.onTaskCompleted = new DownloadParams.OnTaskCompleted() {
-        public void onTaskCompleted(DownloadResult res) {
+      params.onTaskCompleted = new GreatDownloadParams.OnTaskCompleted() {
+        public void onTaskCompleted(GreatDownloadResult res) {
           if (res.exception == null) {
             WritableMap infoMap = Arguments.createMap();
 
@@ -733,7 +733,7 @@ public class RNFSManager extends ReactContextBaseJavaModule {
       };
 
       if (hasBeginCallback) {
-        params.onDownloadBegin = new DownloadParams.OnDownloadBegin() {
+        params.onDownloadBegin = new GreatDownloadParams.OnDownloadBegin() {
           public void onDownloadBegin(int statusCode, long contentLength, Map<String, String> headers) {
             WritableMap headersMap = Arguments.createMap();
 
@@ -754,7 +754,7 @@ public class RNFSManager extends ReactContextBaseJavaModule {
       }
 
       if (hasProgressCallback) {
-        params.onDownloadProgress = new DownloadParams.OnDownloadProgress() {
+        params.onDownloadProgress = new GreatDownloadParams.OnDownloadProgress() {
           public void onDownloadProgress(long contentLength, long bytesWritten) {
             WritableMap data = Arguments.createMap();
 
@@ -767,7 +767,7 @@ public class RNFSManager extends ReactContextBaseJavaModule {
         };
       }
 
-      Downloader downloader = new Downloader();
+      GreatDownloader downloader = new GreatDownloader();
 
       downloader.execute(params);
 
@@ -780,7 +780,7 @@ public class RNFSManager extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void stopDownload(int jobId) {
-    Downloader downloader = this.downloaders.get(jobId);
+    GreatDownloader downloader = this.downloaders.get(jobId);
 
     if (downloader != null) {
       downloader.stop();
@@ -801,7 +801,7 @@ public class RNFSManager extends ReactContextBaseJavaModule {
       boolean hasProgressCallback = options.getBoolean("hasProgressCallback");
 
       ArrayList<ReadableMap> fileList = new ArrayList<>();
-      UploadParams params = new UploadParams();
+      GreatUploadParams params = new GreatUploadParams();
       for(int i =0;i<files.size();i++){
         fileList.add(files.getMap(i));
       }
@@ -811,8 +811,8 @@ public class RNFSManager extends ReactContextBaseJavaModule {
       params.method = method;
       params.fields = fields;
       params.binaryStreamOnly = binaryStreamOnly;
-      params.onUploadComplete = new UploadParams.onUploadComplete() {
-        public void onUploadComplete(UploadResult res) {
+      params.onUploadComplete = new GreatUploadParams.onUploadComplete() {
+        public void onUploadComplete(GreatUploadResult res) {
           if (res.exception == null) {
             WritableMap infoMap = Arguments.createMap();
 
@@ -828,7 +828,7 @@ public class RNFSManager extends ReactContextBaseJavaModule {
       };
 
       if (hasBeginCallback) {
-        params.onUploadBegin = new UploadParams.onUploadBegin() {
+        params.onUploadBegin = new GreatUploadParams.onUploadBegin() {
           public void onUploadBegin() {
             WritableMap data = Arguments.createMap();
 
@@ -840,7 +840,7 @@ public class RNFSManager extends ReactContextBaseJavaModule {
       }
 
       if (hasProgressCallback) {
-        params.onUploadProgress = new UploadParams.onUploadProgress() {
+        params.onUploadProgress = new GreatUploadParams.onUploadProgress() {
           public void onUploadProgress(int totalBytesExpectedToSend,int totalBytesSent) {
             WritableMap data = Arguments.createMap();
 
@@ -853,11 +853,11 @@ public class RNFSManager extends ReactContextBaseJavaModule {
         };
       }
 
-      Uploader uploader = new Uploader();
+      GreatUploader greatUploader = new GreatUploader();
 
-      uploader.execute(params);
+      greatUploader.execute(params);
 
-      this.uploaders.put(jobId, uploader);
+      this.uploaders.put(jobId, greatUploader);
     } catch (Exception ex) {
       ex.printStackTrace();
       reject(promise, options.getString("toUrl"), ex);
@@ -866,10 +866,10 @@ public class RNFSManager extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void stopUpload(int jobId) {
-    Uploader uploader = this.uploaders.get(jobId);
+    GreatUploader greatUploader = this.uploaders.get(jobId);
 
-    if (uploader != null) {
-      uploader.stop();
+    if (greatUploader != null) {
+      greatUploader.stop();
     }
   }
 
@@ -954,9 +954,9 @@ public class RNFSManager extends ReactContextBaseJavaModule {
       rejectFileNotFound(promise, filepath);
       return;
     }
-    if (ex instanceof IORejectionException) {
-      IORejectionException ioRejectionException = (IORejectionException) ex;
-      promise.reject(ioRejectionException.getCode(), ioRejectionException.getMessage());
+    if (ex instanceof GreatIORejectionException) {
+      GreatIORejectionException greatIORejectionException = (GreatIORejectionException) ex;
+      promise.reject(greatIORejectionException.getCode(), greatIORejectionException.getMessage());
       return;
     }
 

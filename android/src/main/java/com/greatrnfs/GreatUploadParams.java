@@ -1,13 +1,13 @@
-package com.rnfs;
+package com.greatrnfs;
 
 import com.facebook.react.bridge.ReadableMap;
 
 import java.net.URL;
 import java.util.ArrayList;
 
-public class UploadParams {
+public class GreatUploadParams {
     public interface onUploadComplete{
-        void onUploadComplete(UploadResult res);
+        void onUploadComplete(GreatUploadResult res);
     }
     public interface onUploadProgress{
         void onUploadProgress(int totalBytesExpectedToSend,int totalBytesSent);

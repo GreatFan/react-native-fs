@@ -1,4 +1,4 @@
-package com.rnfs;
+package com.greatrnfs;
 
 import android.os.AsyncTask;
 import android.webkit.MimeTypeMap;
@@ -20,15 +20,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
-    private UploadParams mParams;
-    private UploadResult res;
+public class GreatUploader extends AsyncTask<GreatUploadParams, int[], GreatUploadResult> {
+    private GreatUploadParams mParams;
+    private GreatUploadResult res;
     private AtomicBoolean mAbort = new AtomicBoolean(false);
 
     @Override
-    protected UploadResult doInBackground(UploadParams... uploadParams) {
-        mParams = uploadParams[0];
-        res = new UploadResult();
+    protected GreatUploadResult doInBackground(GreatUploadParams... greatUploadParams) {
+        mParams = greatUploadParams[0];
+        res = new GreatUploadResult();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -44,7 +44,7 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
         return res;
     }
 
-    private void upload(UploadParams params, UploadResult result) throws Exception {
+    private void upload(GreatUploadParams params, GreatUploadResult result) throws Exception {
         HttpURLConnection connection = null;
         DataOutputStream request = null;
         String crlf = "\r\n";
